@@ -12,7 +12,7 @@ class UserRepository extends BaseRepository<IUser> {
 	 * Creates an account for a user
 	 * @param body Body for creating a user
 	 */
-	async createAccount(body: IUser) {
+	async createAccount(body: IUser): Promise<IUser> {
 		await this.isEmailUsed(body.email);
 
 		return this.create(body);

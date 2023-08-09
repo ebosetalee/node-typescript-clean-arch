@@ -25,7 +25,7 @@ export class UserController extends BaseController {
 
 			const token = await generateJwtToken(user);
 
-			const data = { message: "Sign Up successful", data: { ...user, token } };
+			const data = { message: "Sign Up successful", data: { user, token } };
 
 			this.handleSuccess(req, res, data);
 		} catch (err) {
@@ -39,7 +39,7 @@ export class UserController extends BaseController {
 
 			const token = await generateJwtToken(user);
 
-			const data = { message: "User logged in successfully", data: { ...user, token } };
+			const data = { message: "User logged in successfully", data: { user, token } };
 
 			this.handleSuccess(req, res, data);
 		} catch (err) {
