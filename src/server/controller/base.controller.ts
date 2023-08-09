@@ -4,8 +4,8 @@ import { ControllerError } from "../../common/errors";
 import logger from "../../common/services/logger";
 
 interface responseData {
-	message: string,
-	data: object
+	message: string;
+	data: object;
 }
 export class BaseController {
 	/**

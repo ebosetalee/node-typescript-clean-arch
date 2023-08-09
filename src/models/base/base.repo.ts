@@ -41,7 +41,7 @@ export class BaseRepository<T> implements Repository<T> {
 	 * @param id
 	 * @param opts
 	 */
-	byID(id: string, opts?: { projections?: stringObject; populations?: Populations  }): Promise<T> {
+	byID(id: string, opts?: { projections?: stringObject; populations?: Populations }): Promise<T> {
 		const query = this.getQuery(id);
 		return this.model
 			.findOne(query)
