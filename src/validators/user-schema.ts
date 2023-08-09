@@ -9,14 +9,14 @@ const requiredEmail = requiredString.email();
 const requiredRegexPhone = optionalString.required().regex(/(234|0)[7-9][0-1][0-9]{8}/);
 
 export const SIGNUP = Joi.object().keys({
-    name: requiredString,
-    address: requiredString,
-    email: requiredEmail,
-    phone: requiredRegexPhone,
-    password: requiredString,
+	name: requiredString,
+	address: requiredString,
+	email: requiredEmail,
+	phone: requiredRegexPhone,
+	password: requiredString
 });
 
 export const LOGIN = Joi.object({
-    email: requiredEmail,
-    password: requiredString,
+	email: requiredEmail,
+	password: requiredString
 });
