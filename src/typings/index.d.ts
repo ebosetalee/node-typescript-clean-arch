@@ -1,1 +1,1 @@
-export type AuthResponse = { id: string; firstName: string; lastName: string; email: string };
+export type AuthResponse = { _id: string; firstName: string; lastName: string; email: string };

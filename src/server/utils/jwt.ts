@@ -1,12 +1,13 @@
 import jwt from "jsonwebtoken";
-import env from "common/config/env";
+import env from "../../common/config/env";
 import { AuthResponse } from "typings";
 
 const { jwt_expiration, jwt_secret } = env;
+
 export async function generateJwtToken(data: AuthResponse) {
 	return jwt.sign(
 		{
-			id: data.id,
+			id: data._id,
 			firstName: data.firstName,
 			lastName: data.lastName,
 			email: data.email

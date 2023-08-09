@@ -55,7 +55,7 @@ export class BaseController {
 		//     }
 		//     error.code = NOT_FOUND;
 		// }
-		res.status(error.code).json(error);
 		logger.error(err);
+		return res.status(error.code).json(error);
 	};
 }
