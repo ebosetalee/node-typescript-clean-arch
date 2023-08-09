@@ -3,6 +3,10 @@ import { OK, INTERNAL_SERVER_ERROR } from "http-status";
 import { ControllerError } from "../../common/errors";
 import logger from "../../common/services/logger";
 
+interface responseData {
+	message: string,
+	data: object
+}
 export class BaseController {
 	/**
 	 * Handles operation success and sends a HTTP response
@@ -10,7 +14,7 @@ export class BaseController {
 	 * @param res Express response
 	 * @param data Success data
 	 */
-	handleSuccess = (req: Request, res: Response, data: any, code: number = OK) => {
+	handleSuccess = (req: Request, res: Response, data: responseData, code: number = OK) => {
 		if (res.headersSent) return;
 
 		res.status(code).json(data);

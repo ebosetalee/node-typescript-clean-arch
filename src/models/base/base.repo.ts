@@ -1,6 +1,7 @@
 import mongoose, { Model, Schema, FilterQuery, ClientSession } from "mongoose";
-import { Repository, Query, QueryResult, PaginationQuery } from ".";
+import { Repository, Query, QueryResult, PaginationQuery, Populations } from ".";
 
+type stringObject = string | object;
 export class BaseRepository<T> implements Repository<T> {
 	protected model: Model<T>;
 	constructor(
@@ -18,7 +19,7 @@ export class BaseRepository<T> implements Repository<T> {
 	 * Converts a passed condition argument to a query
 	 * @param condition string or object condition
 	 */
-	getQuery = (condition: string | object): FilterQuery<any> => {
+	getQuery = (condition: stringObject): FilterQuery<object> => {
 		return typeof condition === "string"
 			? { _id: condition, deleted_at: undefined }
 			: { ...condition, deleted_at: undefined };
@@ -40,7 +41,7 @@ export class BaseRepository<T> implements Repository<T> {
 	 * @param id
 	 * @param opts
 	 */
-	byID(id: string, opts?: { projections?: any; populations?: any }): Promise<T> {
+	byID(id: string, opts?: { projections?: stringObject; populations?: Populations  }): Promise<T> {
 		const query = this.getQuery(id);
 		return this.model
 			.findOne(query)
@@ -54,7 +55,7 @@ export class BaseRepository<T> implements Repository<T> {
 	 * @param query
 	 * @param opts
 	 */
-	async byQuery(query: any, opts?: { projections?: any; populations?: any }): Promise<T> {
+	async byQuery(query: object, opts?: { projections?: stringObject; populations?: Populations }): Promise<T> {
 		return this.model
 			.findOne({ ...query, deleted_at: undefined })
 			.select(opts?.projections)
@@ -120,7 +121,7 @@ export class BaseRepository<T> implements Repository<T> {
 	 * @param condition Query condition to match against documents
 	 * @param update The document update
 	 */
-	update(condition: string | object, update: any): Promise<T> {
+	update(condition: stringObject, update: object): Promise<T> {
 		const query = this.getQuery(condition);
 		return this.model.findOneAndUpdate(query, update, { new: true }).exec();
 	}
@@ -130,8 +131,8 @@ export class BaseRepository<T> implements Repository<T> {
 	 * @param condition
 	 * @param update
 	 */
-	async updateAll(condition: string | object, update: any): Promise<T[]> {
-		const query: FilterQuery<any> = this.getQuery(condition);
+	async updateAll(condition: stringObject, update: object): Promise<T[]> {
+		const query: FilterQuery<object> = this.getQuery(condition);
 
 		await this.model.updateMany(query, update, {}).exec();
 		return this.model.find(query).exec();
@@ -141,9 +142,9 @@ export class BaseRepository<T> implements Repository<T> {
 	 * Soft deletes a document by created `deleted_at` field in the document and setting it to true.
 	 * @param condition
 	 */
-	remove(condition: string | object): Promise<T> {
-		const query: FilterQuery<any> = this.getQuery(condition);
-		const updateQuery: any = { deleted_at: new Date() };
+	remove(condition: stringObject): Promise<T> {
+		const query: FilterQuery<object> = this.getQuery(condition);
+		const updateQuery: object = { deleted_at: new Date() };
 		const opt = { new: true };
 		return this.model.findOneAndUpdate(query, updateQuery, opt).exec();
 	}
@@ -152,8 +153,8 @@ export class BaseRepository<T> implements Repository<T> {
 	 * Permanently deletes a document by removing it from the collection
 	 * @param condition
 	 */
-	destroy(condition: string | object): Promise<T> {
-		const query: FilterQuery<any> = this.getQuery(condition);
+	destroy(condition: stringObject): Promise<T> {
+		const query: FilterQuery<object> = this.getQuery(condition);
 		return this.model.findOneAndDelete(query).exec();
 	}
 }
