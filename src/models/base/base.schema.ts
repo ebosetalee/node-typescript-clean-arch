@@ -15,7 +15,6 @@ export const SchemaFactory = <T>(schemaFields: SchemaDefinition<T>, options?: Sc
 		{
 			...options,
 			...timestamps,
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			selectPopulatedPaths: false
 		}
